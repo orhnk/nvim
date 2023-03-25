@@ -1,0 +1,14 @@
+#+title: KoBruhh (Vim)/(Neovim)
+This is my personal config. I use it everyday. I like it. It is efficient in both ways.
+
+* Features:
+- [X] Minimal File Tree Manager
+- [ ] DashBoard
+- [ ] MultiCursors
+- [ ] MultiLevel undo
+- [X] LSP (has no default option configured by user [So Simple])
+- [X] Several Built in Themes (Just several most beloved ones)
+- [X] Simplest Config (Has no fancy utils everything is on 2 files. [one for lua one for vim])
+- [ ] ...
+
+* ScreenShots:

@@ -1,17 +1,73 @@
-let mapleader=" "                              " 设置leader键为空格键
+let mapleader=" "
 set number
-set relativenumber
+set rnu
 set termguicolors
+set fillchars+=eob:\
+set softtabstop
+set tabstop=3
+set shiftwidth=3
+
+" Highlights the cursor line number
+highlight CursorLineNr guifg=#fabd2f cterm=italic gui=italic
+highlight LineNr guifg=#fabd2f cterm=italic gui=italic
+
+
+augroup CursorLine
+	autocmd!
+	autocmd VimEnter,WinEnter,BufWinEnter * highlight CursorLineNr gui=bold,italic
+augroup END
+
+" set hls
+set cursorline
+set cursorlineopt=number
 
 filetype plugin on
 
 call plug#begin("/home/kobruh/.vim/plugged/")
+Plug 'lambdalisue/fern.vim'
 "Plug 'rhysd/vim-clang-format'
-"Plug 'kaicataldo/material.vim', { 'branch': 'main' }
+
+" Colorschemes
+Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 Plug 'morhetz/gruvbox'
+Plug 'rafi/awesome-vim-colorschemes'
+Plug 'romgrk/doom-one.vim' " Emacs doom default theme
+Plug 'dracula/vim'
+Plug 'altercation/solarized'
+Plug 'tomasr/molokai'
+Plug 'sonph/onehalf'
+" Plug 'nurmine/Zenburn' " Errorneus
+Plug 'gosukiwi/vim-atom-dark'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'jacoborus/tender.vim'
+Plug 'sjl/badwolf/'
+Plug 'nordtheme/vim'
+Plug 'nanotech/jellybeans.vim'
+Plug 'sindresorhus/hyper-snazzy'
+Plug 'rakr/vim-one'
+Plug 'mhartington/oceanic-next'
+Plug 'ayu-theme/ayu-vim'
+Plug 'ciaranm/inkpot'
+Plug 'kyoz/purify'
+Plug 'drewtempelmeyer/palenight.vim'
+Plug 'sainnhe/gruvbox-material'
+Plug 'sainnhe/everforest'
+Plug 'sainnhe/sonokai'
+Plug 'sainnhe/edge'
+
 Plug 'preservim/nerdcommenter'
+
+" File Explorer
 Plug 'preservim/nerdtree'
-"Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'Xuyuanp/nerdtree-git-plugin'
+" Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'ryanoasis/vim-devicons'
+
+" Surrounding Editing (e.g. change quotes, brackets, etc.)
+Plug 'tpope/vim-surround'
+"-----> cs<first char><second char> ;to change surrounding <First Char> with <Second Char>
+
+" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 "Plug 'agude/vim-eldar'
 "Plug 'EdenEast/nightfox.nvim'
 "Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
@@ -24,20 +80,28 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'Chiel92/vim-autoformat'
 "Plug 'kevinhwang91/rnvimr'  " 文件浏览器
+
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" CocInstall coc-snippets
+" CocInstall coc-rust-analyzer
+" CocInstall coc-python
+" CocInstall coc-clangd
+" CocInstall coc-toml
+" CocInstall coc-pairs
+" CocInstall coc-prettier
 
 Plug 'samirettali/shebang.nvim'
-Plug 'honza/vim-snippets'
+" Plug 'honza/vim-snippets'
 "Plug 'neoclide/coc-denite'
 "Plug 'ayu-theme/ayu-vim'
 "Plug 'joshdick/onedark.vim'
 "Plug 'dracula/vim', { 'as': 'dracula' }
 "Plug 'itchyny/lightline.vim'
 "Plug 'Yggdroot/indentLine' " Hate that shit (!) I think that was this one
-Plug 'sheerun/vim-polyglot'
+" Plug 'sheerun/vim-polyglot'
 " Plug 'golang/lint'
 "Plug 'mg979/vim-xtabline'  " 精致的顶栏
-Plug 'mbbill/undotree'     " Undo Tree
+" Plug 'mbbill/undotree'     " Undo Tree
 "Plug 'liuchengxu/vista.vim' " 打开函数与变量列表
 "Plug 'lambdalisue/suda.vim' " :sudowrite 或者 :sw 就等于sudo vim ...
 
@@ -52,7 +116,8 @@ call plug#end()
 "------------------
 
 map <F2> <ESC>:w<CR>:!chmod +x %;./%<CR>
-
+noremap! <C-BS> <C-w>
+noremap! <C-h> <C-w>
 
 "----------------
 "		COC-CONFIG   |
@@ -143,19 +208,46 @@ colorscheme gruvbox
 
 
 "----------------
-"		NERD TREE    |
-"----------------
+"   NERD TREE    |
+"--------------------------------
+" C-a to toggle NERDTree	 |
+" C-n to open NERDTree	  	 |
+" C-t to toggle NERDTree         |
+" C-f to find file in NERDTree   |
+" <leader>n to focus NERDTree    |
+"--------------------------------
 
 let NERDTreeShowHidden=1
 let NERDTreeMinimalUI=1
 let NERDTreeShowBookmarks=1
-let NERDTreeShowLineNumbers=1
-let NERDTreeWinPos="left"
+" let NERDTreeShowLineNumbers=1
+let NERDTreeWinPos="right"
 let NERDTreeWinSize=30
+let g:NERDTreeDirArrowExpandable = ' '
+let g:NERDTreeDirArrowCollapsible = ' '
+
+" Hide the current working directory in NERDTree
+augroup nerdtreehidecwd
+	autocmd!
+	autocmd FileType nerdtree setlocal conceallevel=3
+				\ | syntax match NERDTreeHideCWD #^[</].*$# conceal
+				\ | setlocal concealcursor=n
+augroup end
+
 map <C-a> :NERDTreeToggle<CR>
+nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-f> :NERDTreeFind<CR>
+
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
+" Open the existing NERDTree on each new tab.
+autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 
 "----------------
-"		   FZF       |
+"      FZF       |
 "----------------
 
 " Use ripgrep for fzf (Copilot)
@@ -171,4 +263,19 @@ let g:fzf_preview_file = 'bat --style=numbers --color=always {}'
 "---------------
 
 let g:shebang_commands = { 'rs': '/usr/bin/env run-cargo-script' } " #!/usr/bin/env run-cargo-script
+
+"--------------
+"   TERMINAL   |
+"--------------
+" :terminal
+" :term
+
+set shell=/bin/zsh
+
+"----------------
+"     CONFIG     |
+"----------------
+" :Config "Opens config file"
+
+command Config :e $MYVIMRC
 
