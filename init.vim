@@ -12,6 +12,8 @@ syntax on
 highlight CursorLineNr guifg=#fabd2f cterm=italic gui=italic
 highlight LineNr guifg=#fabd2f cterm=italic gui=italic
 
+set undodir=~/.vim/undodir
+set undofile
 
 augroup CursorLine
 	autocmd!
