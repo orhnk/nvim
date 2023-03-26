@@ -3,9 +3,10 @@ set number
 set rnu
 set termguicolors
 set fillchars+=eob:\
-set softtabstop
+" set softtabstop
 set tabstop=3
 set shiftwidth=3
+syntax on
 
 " Highlights the cursor line number
 highlight CursorLineNr guifg=#fabd2f cterm=italic gui=italic
@@ -83,14 +84,22 @@ Plug 'Chiel92/vim-autoformat'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " CocInstall coc-snippets
-" CocInstall coc-rust-analyzer
-" CocInstall coc-python
-" CocInstall coc-clangd
-" CocInstall coc-toml
+" CocInstall coc-rust-analyzer  "Rust"
+" CocInstall coc-python  	     "Python"
+" CocInstall coc-clangd   		  "C/C++"
+" CocInstall coc-hls   			  "Haskell"
+" CocInstall coc-toml  			  "TOML"
+" CocInstall coc-lua  			  "Lua"
+" CocInstall coc-vimlsp			  "Vim"
 " CocInstall coc-pairs
 " CocInstall coc-prettier
 
+" Haskell development:
+Plug 'neovimhaskell/haskell-vim'
+
+" Automatic shebang generation
 Plug 'samirettali/shebang.nvim'
+
 " Plug 'honza/vim-snippets'
 "Plug 'neoclide/coc-denite'
 "Plug 'ayu-theme/ayu-vim'
@@ -105,7 +114,7 @@ Plug 'samirettali/shebang.nvim'
 "Plug 'liuchengxu/vista.vim' " 打开函数与变量列表
 "Plug 'lambdalisue/suda.vim' " :sudowrite 或者 :sw 就等于sudo vim ...
 
-
+" Copilot
 Plug 'github/copilot.vim'
 " |---> Requires: git clone https://github.com/github/copilot.vim.git ~/.config/nvim/pack/github/start/copilot.vim
 
@@ -120,14 +129,14 @@ noremap! <C-BS> <C-w>
 noremap! <C-h> <C-w>
 
 "----------------
-"		COC-CONFIG   |
+"   COC-CONFIG   |
 "--------------------------------
-" :CocInstall coc-snippets	     |
+" :CocInstall coc-snippets	      |
 " :CocInstall coc-json	         |
-" :CocInstall coc-rust-analyzer	 |
-" :CocInstall coc-python	       |
+" :CocInstall coc-rust-analyzer  |
+" :CocInstall coc-python	      |
 " :CocInstall coc-pairs	         |
-" :CocInstall coc-clangd	       |
+" :CocInstall coc-clangd	      |
 "--------------------------------
 inoremap <silent><expr> <TAB> coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<TAB>"
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
@@ -135,7 +144,7 @@ inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 "----------------
 " NERD COMMENTER |
 "-------------------------------------------------------------------
-" Use compact syntax for prettified multi-line comments 					  |
+" Use compact syntax for prettified multi-line comments 				  |
 " G C Comment out the current line or text selected in visual mode. |
 "-------------------------------------------------------------------
 
@@ -167,7 +176,7 @@ map gc <Plug>NERDCommenterToggle
 "--------------------------------------
 " Ctrl+D to select next suggestion	   |
 " Ctrl+A to select previous suggestion |
-" Ctrl+ESC to dismiss the panel		     |
+" Ctrl+ESC to dismiss the panel		   |
 " Ctrl+S to open the panel		         |
 "--------------------------------------
 
@@ -182,7 +191,7 @@ inoremap <C-S> <Esc>:execute 'Copilot panel'<CR>
 "----------------
 "    AIRLINE     |
 "---------------------------
-" :AirlineTheme gruvbox		  |
+" :AirlineTheme gruvbox		 |
 " Use triangular separators |
 "---------------------------
 
@@ -206,12 +215,11 @@ let g:airline#extensions#tabline#show_close_button = 1
 
 colorscheme gruvbox
 
-
 "----------------
 "   NERD TREE    |
 "--------------------------------
-" C-a to toggle NERDTree	 |
-" C-n to open NERDTree	  	 |
+" C-a to toggle NERDTree	      |
+" C-n to open NERDTree	  	 		|
 " C-t to toggle NERDTree         |
 " C-f to find file in NERDTree   |
 " <leader>n to focus NERDTree    |
@@ -279,3 +287,14 @@ set shell=/bin/zsh
 
 command Config :e $MYVIMRC
 
+"----------------
+"     HASKELL    |
+"----------------
+let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
+let g:haskell_classic_highlighting = 1
