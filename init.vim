@@ -2,7 +2,7 @@ let mapleader=" "
 set number
 set rnu
 set termguicolors
-set fillchars+=eob:\
+set fillchars+=eob:\ 
 " set softtabstop
 set tabstop=3
 set shiftwidth=3
@@ -27,12 +27,13 @@ set cursorlineopt=number
 filetype plugin on
 
 call plug#begin("/home/kobruh/.vim/plugged/")
-Plug 'lambdalisue/fern.vim'
+" Plug 'lambdalisue/fern.vim'
 "Plug 'rhysd/vim-clang-format'
 
 " Colorschemes
 Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 Plug 'morhetz/gruvbox'
+Plug 'NLKNguyen/papercolor-theme'
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'romgrk/doom-one.vim' " Emacs doom default theme
 Plug 'dracula/vim'
@@ -58,7 +59,12 @@ Plug 'sainnhe/everforest'
 Plug 'sainnhe/sonokai'
 Plug 'sainnhe/edge'
 
+" COMMENTER
 Plug 'preservim/nerdcommenter'
+
+" Git
+" Plug 'airblade/vim-gitgutter'
+Plug 'mhinz/vim-signify'
 
 " File Explorer
 Plug 'preservim/nerdtree'
@@ -133,6 +139,8 @@ noremap! <C-h> <C-w>
 "----------------
 "   COC-CONFIG   |
 "--------------------------------
+" C-l -> Go to definition        |
+" C-h -> Go back                 |
 " :CocInstall coc-snippets	      |
 " :CocInstall coc-json	         |
 " :CocInstall coc-rust-analyzer  |
@@ -140,8 +148,27 @@ noremap! <C-h> <C-w>
 " :CocInstall coc-pairs	         |
 " :CocInstall coc-clangd	      |
 "--------------------------------
+
 inoremap <silent><expr> <TAB> coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<TAB>"
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Coc-snippets
+
+" Use <C-l> for trigger snippet expand.
+imap <C-l> <Plug>(coc-snippets-expand)
+
+" Use <C-j> for select text for visual placeholder of snippet.
+vmap <C-j> <Plug>(coc-snippets-select)
+
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-j>'
+
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-k>'
+
+" Use <C-j> for both expand and jump (make expand higher priority.)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
+
 
 "----------------
 " NERD COMMENTER |
