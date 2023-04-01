@@ -132,7 +132,7 @@ call plug#end()
 " VIM KEY BINDINGS |
 "------------------
 
-map <F2> <ESC>:w<CR>:!chmod +x %;./%<CR>
+map <F2> <ESC>:w<CR>:!if [ -x /path/to/file.sh ]; then ./%; else chmod +x %; ./%; fi<CR>
 noremap! <C-BS> <C-w>
 noremap! <C-h> <C-w>
 
@@ -299,7 +299,7 @@ let g:fzf_preview_file = 'bat --style=numbers --color=always {}'
 "    SHEBANG    |
 "---------------
 
-let g:shebang_commands = { 'rs': '/usr/bin/env run-cargo-script' } " #!/usr/bin/env run-cargo-script
+let g:shebang_commands = {	'rs': '/usr/bin/env run-cargo-script',	'c': '/usr/bin/c' } " #!/usr/bin/env run-cargo-script
 
 "--------------
 "   TERMINAL   |
