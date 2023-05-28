@@ -28,7 +28,7 @@ filetype plugin on
 
 call plug#begin("/home/kobruh/.vim/plugged/")
 " Plug 'lambdalisue/fern.vim'
-"Plug 'rhysd/vim-clang-format'
+Plug 'rhysd/vim-clang-format'
 
 " Colorschemes
 Plug 'kaicataldo/material.vim', { 'branch': 'main' }
@@ -130,11 +130,141 @@ call plug#end()
 
 "------------------
 " VIM KEY BINDINGS |
-"------------------
+"-----------------------------------------------
+" F2 -> Compile&Run the entire project          |
+" F3 -> Execute the current file from extension |
+" F4 -> Execute the current file with Shebang   |
+"-----------------------------------------------
 
-map <F2> <ESC>:w<CR>:!if [ -x /path/to/file.sh ]; then ./%; else chmod +x %; ./%; fi<CR>
+map <F2> <ESC>:wa<CR>:RunAll<CR>
+map <F3> <ESC>:wa<CR>:Run<CR>
+map <F4> <ESC>:wa<CR>:!if [ -x /path/to/file.sh ]; then ./%; else chmod +x %; ./%; fi<CR>
 noremap! <C-BS> <C-w>
 noremap! <C-h> <C-w>
+
+"---------------
+" VIM FUNCTIONS |
+"--------------------------------------------
+" :Run -> compiles & runs the entire project |
+"--------------------------------------------
+
+command! -nargs=0 RunAll :call RunAll()
+function! RunAll()
+    let l:dirname = expand('%:p:h')
+    let l:extension = substitute(expand('%:p'), '.*\.', '', '')
+    if l:extension ==# 'rs'
+        execute '!cd ' . l:dirname . ' && cargo run'
+    elseif l:extension ==# 'cpp'
+        execute '!cd ' . l:dirname . ' && g++ *.cpp -o output && ./output'
+    elseif l:extension ==# 'py'
+        execute '!cd ' . l:dirname . ' && python *.py'
+    elseif l:extension ==# 'java'
+        execute '!cd ' . l:dirname . ' && javac *.java && java ' . substitute(expand('%:t'), '\.java$', '', '')
+    elseif l:extension ==# 'c'
+        execute '!cd ' . l:dirname . ' && gcc *.c -o output && ./output'
+    elseif l:extension ==# 'scala'
+        execute '!cd ' . l:dirname . ' && scala ' . expand('%:t')
+    elseif l:extension ==# 'swift'
+        execute '!cd ' . l:dirname . ' && swiftc *.swift && ./' . substitute(expand('%:t'), '\.swift$', '', '')
+    elseif l:extension ==# 'js'
+        execute '!cd ' . l:dirname . ' && node *.js'
+    elseif l:extension ==# 'php'
+        execute '!cd ' . l:dirname . ' && php *.php'
+    elseif l:extension ==# 'rb'
+        execute '!cd ' . l:dirname . ' && ruby *.rb'
+    elseif l:extension ==# 'pl'
+        execute '!cd ' . l:dirname . ' && perl *.pl'
+    elseif l:extension ==# 'lua'
+        execute '!cd ' . l:dirname . ' && lua *.lua'
+    elseif l:extension ==# 'go'
+        execute '!cd ' . l:dirname . ' && go run *.go'
+    elseif l:extension ==# 'sh'
+        execute '!cd ' . l:dirname . ' && bash *.sh'
+    elseif l:extension ==# 'jl'
+        execute '!cd ' . l:dirname . ' && julia *.jl'
+    elseif l:extension ==# 'hs'
+        execute '!cd ' . l:dirname . ' && runhaskell *.hs'
+    elseif l:extension ==# 'kt'
+        execute '!cd ' . l:dirname . ' && kotlinc *.kt -include-runtime -d ' . substitute(expand('%:t'), '\.kt$', '.jar', '') . ' && java -jar ' . substitute(expand('%:t'), '\.kt$', '.jar', '')
+    elseif l:extension ==# 'clj'
+        execute '!cd ' . l:dirname . ' && clojure *.clj'
+    elseif l:extension ==# 'cs'
+        execute '!cd ' . l:dirname . ' && mcs *.cs && mono ' . substitute(expand('%:t'), '\.cs$', '.exe', '')
+    elseif l:extension ==# 'vb'
+        execute '!cd ' . l:dirname . ' && vbnc *.vb && mono ' . substitute(expand('%:t'), '\.vb$', '.exe', '')
+    elseif l:extension ==# 'ml'
+        execute '!cd ' . l:dirname . ' && ocamlc *.ml -o output && ./output'
+    elseif l:extension ==# 'pas'
+        execute '!cd ' . l:dirname . ' && fpc *.pas && ./' . substitute(expand('%:t'), '\.pas$', '', '')
+    elseif l:extension ==# 'r'
+        execute '!cd ' . l:dirname . ' && Rscript *.r'
+    elseif l:extension ==# 'd'
+        execute '!cd ' . l:dirname . ' && dmd *.d && ./' . substitute(expand('%:t'), '\.d$', '', '')
+    else
+        echo 'Unsupported file extension: ' . l:extension
+    endif
+endfunction
+
+command! -nargs=0 Run :call Run()
+function! Run()
+let l:filename = expand('%')
+    let l:extension = substitute(l:filename, '.*\.', '', '')
+    if l:extension ==# 'rs'
+        execute '!rustc ' . l:filename . ' && ./'
+    elseif l:extension ==# 'cpp'
+        execute '!g++ ' . l:filename . ' -o ' . l:filename . '.out && ./' . l:filename . '.out'
+    elseif l:extension ==# 'py'
+        execute '!python ' . l:filename
+    elseif l:extension ==# 'java'
+        execute '!javac ' . l:filename . ' && java ' . substitute(l:filename, '\.java$', '', '')
+    elseif l:extension ==# 'c'
+        execute '!gcc ' . l:filename . ' -o ' . l:filename . '.out && ./' . l:filename . '.out'
+    elseif l:extension ==# 'scala'
+        execute '!scala ' . l:filename
+    elseif l:extension ==# 'swift'
+        execute '!swiftc ' . l:filename . ' && ./' . substitute(l:filename, '\.swift$', '', '')
+    elseif l:extension ==# 'js'
+        execute '!node ' . l:filename
+    elseif l:extension ==# 'php'
+        execute '!php ' . l:filename
+    elseif l:extension ==# 'rb'
+        execute '!ruby ' . l:filename
+    elseif l:extension ==# 'pl'
+        execute '!perl ' . l:filename
+    elseif l:extension ==# 'lua'
+        execute '!lua ' . l:filename
+    elseif l:extension ==# 'go'
+        execute '!go run ' . l:filename
+    elseif l:extension ==# 'sh'
+        execute '!bash ' . l:filename
+    elseif l:extension ==# 'jl'
+        execute '!julia ' . l:filename
+    elseif l:extension ==# 'hs'
+        execute '!runhaskell ' . l:filename
+    elseif l:extension ==# 'kt'
+        execute '!kotlinc ' . l:filename . ' -include-runtime -d ' . substitute(l:filename, '\.kt$', '.jar', '') . ' && java -jar ' . substitute(l:filename, '\.kt$', '.jar', '')
+    elseif l:extension ==# 'clj'
+        execute '!clojure ' . l:filename
+    elseif l:extension ==# 'cs'
+        execute '!mcs ' . l:filename . ' && mono ' . substitute(l:filename, '\.cs$', '.exe', '')
+    elseif l:extension ==# 'vb'
+        execute '!vbnc ' . l:filename . ' && mono ' . substitute(l:filename, '\.vb$', '.exe', '')
+    elseif l:extension ==# 'ml'
+        execute '!ocamlc ' . l:filename . ' -o ' . substitute(l:filename, '\.ml$', '', '') . ' && ./' . substitute(l:filename, '\.ml$', '', '')
+    elseif l:extension ==# 'pas'
+        execute '!fpc ' . l:filename . ' && ./' . substitute(l:filename, '\.pas$', '', '')
+    elseif l:extension ==# 'r'
+        execute '!Rscript ' . l:filename
+    elseif l:extension ==# 'd'
+        execute '!dmd ' . l:filename . ' && ./' . substitute(l:filename, '\.d$', '', '')
+    elseif l:extension ==# 'scala'
+        execute '!scala ' . l:filename
+    elseif l:extension ==# 'rs'
+        execute '!rustc ' . l:filename . ' && ./'
+    else
+        echo 'Unsupported file extension: ' . l:extension
+    endif
+endfunction
 
 "----------------
 "   COC-CONFIG   |
@@ -271,7 +401,7 @@ augroup nerdtreehidecwd
 				\ | setlocal concealcursor=n
 augroup end
 
-map <C-a> :NERDTreeToggle<CR>
+map <C-z> :NERDTreeToggle<CR>
 nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
