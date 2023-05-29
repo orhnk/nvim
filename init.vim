@@ -8,9 +8,19 @@ set tabstop=3
 set shiftwidth=3
 syntax on
 
-" Highlights the cursor line number
-highlight CursorLineNr guifg=#fabd2f cterm=italic gui=italic
-highlight LineNr guifg=#fabd2f cterm=italic gui=italic
+" Highlight current cursorline
+augroup CursorLine
+    autocmd!
+    autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+    autocmd WinLeave * setlocal nocursorline
+augroup END
+
+" Make line numbers italic
+augroup LineNumbers
+    autocmd!
+    autocmd VimEnter,WinEnter,BufWinEnter * highlight LineNr cterm=italic gui=italic
+    autocmd WinLeave * highlight LineNr cterm=NONE gui=NONE
+augroup END
 
 set undodir=~/.vim/undodir
 set undofile
